@@ -1,5 +1,19 @@
 import { useState } from 'react'
 
+const Statistics = ({good, neutral, bad, total, average, positive}) => {
+  return (
+    <div>
+      <Display text="good" total={good}/>
+      <Display text="neutral" total={neutral}/>
+      <Display text="bad" total={bad}/>
+      <Display text="all" total={total}/>
+      <Display text="average" total={average}/>
+      <Display text="positive" total={positive}/>
+    </div>
+  )
+  
+}
+
 
 const Display = ({text, total}) => {
   return (
@@ -58,12 +72,7 @@ const App = () => {
       
 
       <h1>Statistics</h1>
-      <Display text="good" total={good}/>
-      <Display text="neutral" total={neutral}/>
-      <Display text="bad" total={bad}/>
-      <Display text="all" total={total}/>
-      <Display text="average" total={calculateAverage()}/>
-      <Display text="positive" total={calculatePositive()}/>
+      <Statistics good={good} neutral={neutral} bad={bad} total={total} average={calculateAverage()} positive={calculatePositive()}/>
     </div>
   )
 }
