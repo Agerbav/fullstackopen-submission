@@ -8,23 +8,21 @@ const Statistics = ({good, neutral, bad, total, average, positive}) => {
   }
   return (
     <div>
-      <Display text="good" total={good}/>
-      <Display text="neutral" total={neutral}/>
-      <Display text="bad" total={bad}/>
-      <Display text="all" total={total}/>
-      <Display text="average" total={average}/>
-      <Display text="positive" total={positive}/>
+      <StatisticsLine text="good" value={good}/>
+      <StatisticsLine text="neutral" value={neutral}/>
+      <StatisticsLine text="bad" value={bad}/>
+      <StatisticsLine text="all" value={total}/>
+      <StatisticsLine text="average" value={average}/>
+      <StatisticsLine text="positive" value={positive}/>
     </div>
-  )
- 
-  
+  )  
 }
 
 
-const Display = ({text, total}) => {
+const StatisticsLine = ({text, value}) => {
   return (
     <div>
-      <p>{text} {total}</p>
+      <p>{text} {value}</p>
     </div>
   )
 }
