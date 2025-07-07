@@ -1,44 +1,62 @@
 
-const Hello = (props) => {
-  console.log(props)
+import { useState } from "react"
+
+// const Hello = ( {name, age}) => {
+//   const bornYear = () => new Date().getFullYear() - age
+//   return ( 
+//     <div>
+//       <p>Hello {name}. You are {age}!</p>
+//       <p>So you were probaly born in {bornYear()}</p>
+//     </div>
+//   )
+// }
+
+const History = (props) => {
+  if(props.allClicks.length === 0){
+    return (
+      <div>The app is used by pressing the buttons</div>
+    )
+  }
   return (
-    <div>
-      <p>Hello {props.name}. You are {props.age}!</p>
-    </div>
+    <div>Button press history: {props.allClicks.join(' ')}</div>
   )
 }
 
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
+
 
 const App = () => {
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+  const [allClicks, setAll] = useState([])
+  // const [total, setTotal] = useState(0)
 
-  // console.log("Hello from component")
-  // return(
-  //   <div>
-  //     <p>Hello World</p>
-  //   </div>
-  // )
+  const handleLeftClick = () => {
+    setAll(allClicks.concat('L'))
+    // const updatedLeft = left+1
+    setLeft(left + 1)
+    // setTotal(updatedLeft+right)
+  }
 
-  // const now = new Date()
-  // const a = 10
-  // const b = 20
 
-  // console.log(now, a+b)
+  const handleRightClick = () => {
+    setAll(allClicks.concat('R'))
+    // const updatedRight = right+1
+    setRight(right + 1)
+    // setTotal(left+updatedRight)
+  }
 
-  // const name = "Suzy";
-  // const age = 6;
+  return (
+    <div>
+      {left}
+      <Button onClick={handleLeftClick} text='left' />
+      <Button onClick={handleRightClick} text='right' />
+      {right}
 
-  // const friends = [
-  //   {name: "Peter", age: 4},
-  //   {name: "Jack", age: 10},
-  // ]
-  // const friends = ["Peter", "Maya"]
-
-  //OBJECTS ARE NOT VALID AS REACT CHILD
-  // return(
-  //   <>
-  //     <p>{friends[0]}</p>
-  //   </>
-  // )
+      
+      <History allClicks={allClicks}/>
+    </div>
+  )
 }
 
 export default App
