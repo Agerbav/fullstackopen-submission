@@ -8,9 +8,9 @@ const Filter = ({filter, handleFilterChange}) =>{
     </div>
   )
 }
-const PersonForm = ({newName, handleNameChange, newNumber, handleNumberChange, addPerson}) =>{
+const PersonForm = ({newName, handleNameChange, newNumber, handleNumberChange, handleAddPerson}) =>{
   return (
-    <form onSubmit={addPerson}>
+    <form onSubmit={handleAddPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange}/>
         </div>
@@ -54,10 +54,18 @@ const App = () => {
     setFilter(event.target.value)
   }
 
-  const addPerson = (event) =>{
+  const handleAddPerson = (event) =>{
     event.preventDefault()
     if(persons.map(person=>person.name).includes(newName)){
-      alert(`${newName} is already added in the phonebook`)
+      const person = persons.find(p => p.name === newName)
+      const newPerson = {...person, number: newNumber}
+      if(confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        personServices
+          .update(person.id, newPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id === newPerson.id ? returnedPerson : person))
+          })
+      }
     }
     else{
       const newPerson = {
@@ -93,7 +101,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFilterChange={handleFilterChange}/>
       <h3>Add a new</h3>
-      <PersonForm newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} addPerson={addPerson}/>
+      <PersonForm newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} handleAddPerson={handleAddPerson}/>
       <h2>Numbers</h2>
       <ul>
         {personsToShow.map(person => 
