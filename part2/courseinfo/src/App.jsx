@@ -5,7 +5,6 @@ const Part = ({part}) => {
     </p>
   )
 }
-
 const Header = ({course}) => {
   return (
     <h1>{course.name}</h1>
@@ -20,11 +19,19 @@ const Content = ({course}) => {
     </>
   )
 }
+const Total = ({course}) => {
+  const exercises = course.parts.map(part => part.exercises)
+  return(
+    <p>Total of {exercises.reduce((total, currentValue)=>total + currentValue)} Exercises</p>
+  )
+}
+
 const Course = ({course}) =>{
   return(
     <div>
       <Header course={course} />
       <Content course={course} />
+      <Total course={course}/>
     </div>
   )
 }
