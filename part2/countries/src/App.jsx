@@ -17,6 +17,9 @@ function App() {
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
+  const handleShowCountry = (country) => {
+    setFilter(country.name.common)
+  }
 
   const shownCountries = countries.filter(country => country.name.common.toLowerCase().includes(filter.toLowerCase()))
   // console.log(shownCountries)
@@ -24,7 +27,7 @@ function App() {
   return(
     <div>
       Find countries <input value={filter} onChange={handleFilterChange} />
-      <Countries countries={shownCountries} />
+      <Countries countries={shownCountries} handleShowCountry={handleShowCountry} />
     </div>
   )
 }
