@@ -24,10 +24,12 @@ let persons = [
     }
 ]
 
-
+//get all persons
 app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
+
+//get info for current state
 app.get('/info', (request, response) => {
   const now = new Date()
   const total = persons.length
@@ -35,6 +37,17 @@ app.get('/info', (request, response) => {
   <p>Phonebook has info for ${total} people</p>
   <p>${now}</p>`
   response.send(info)
+})
+
+//get details from person
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  const person = persons.find(persons => persons.id === id)
+  if(person){
+    response.json(person)
+  }else{
+    response.status(404).end()
+  }
 })
 
 const PORT = 3001
