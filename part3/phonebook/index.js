@@ -25,11 +25,13 @@ app.get('/api/persons', (request, response) => {
 //get info for current state
 app.get('/info', (request, response) => {
   const now = new Date()
-  const total = Person.length
-  const info = `
-  <p>Phonebook has info for ${total} people</p>
-  <p>${now}</p>`
-  response.send(info)
+  Person.countDocuments().then(total=>{
+    const info = `
+    <p>Phonebook has info for ${total} people</p>
+    <p>${now}</p>`
+    response.send(info)
+  })
+  
 })
 
 //get details from person
