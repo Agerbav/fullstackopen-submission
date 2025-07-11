@@ -96,7 +96,7 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName("")
           setNewNumber("")
-          setMessage(`Added ${returnedPerson.name}`)
+          setMessage(`Added ${newName}`)
 
         })
     }
