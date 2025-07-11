@@ -64,11 +64,25 @@ app.post('/api/persons', (request, response) => {
   const body = request.body
   const id = Math.floor(Math.random() * 99999)
 
+  if(!body.name || !body.number){
+    return response.status(400).json({
+      error: "The name or number is missing"
+    })
+  }
+  const personsName = persons.map(person=>person.name)
+  // console.log(personsName)
+  if(personsName.find(name=> name === body.name)){
+    return response.status(409).json({
+      error: "The name must be unique"
+    })
+  }
+
   const person = {
     id: String(id),
     name: body.name,
     number: body.number,
   }
+
 
   persons = persons.concat(person)
   // console.log(body, id)
