@@ -43,9 +43,9 @@ app.get('/api/persons/:id', (request, response) => {
 //detele person from server
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  persons = persons.filter(person=>person.id !== id)
-
-  response.status(204).end()
+  Person.findByIdAndDelete(id).then(person=>{
+    response.status(204).end()
+  })
 })
 
 //create new person
