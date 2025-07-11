@@ -1,1 +1,1 @@
-DELETE http://localhost:3001/api/persons/3
+DELETE https://wljzfk-3001.csb.app/api/persons/3
