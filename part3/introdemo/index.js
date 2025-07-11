@@ -2,6 +2,23 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
+//Middleware used when send a request to the server
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+app.use(requestLogger)
+
+//Middleware used when requests made to non existent routes happened
+const unknownEndpoint = (request, response) => { 
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
 let notes = [
   {
     id: "1",
