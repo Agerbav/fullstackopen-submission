@@ -97,7 +97,9 @@ const App = () => {
           setNewName("")
           setNewNumber("")
           setMessage(`Added ${newName}`)
-
+        })
+        .catch(error=>{
+          setMessage(error.response.data.error)
         })
     }
   }
