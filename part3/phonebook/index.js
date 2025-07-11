@@ -70,6 +70,25 @@ app.post('/api/persons', (request, response) => {
   })
 })
   
+app.put('/api/persons/:id', (request, response, next) => {
+  const { name, number } = request.body
+  // console.log(name, number)
+  Person.findById(request.params.id)
+    .then(person=>{
+      if(!person){
+        return response.status(404).end()
+      }
+      console.log(person)
+      person.name = name
+      person.number = number
+
+      person.save().then((updatedPerson) => {
+        response.json(updatedPerson)
+      })
+    })
+    .catch(error=>next(error))
+})
+
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
