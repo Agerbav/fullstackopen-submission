@@ -25,7 +25,7 @@ app.get('/api/persons', (request, response) => {
 //get info for current state
 app.get('/info', (request, response) => {
   const now = new Date()
-  const total = persons.length
+  const total = Person.length
   const info = `
   <p>Phonebook has info for ${total} people</p>
   <p>${now}</p>`
@@ -35,12 +35,9 @@ app.get('/info', (request, response) => {
 //get details from person
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  const person = persons.find(persons => persons.id === id)
-  if(person){
+  Person.findById(id).then(person=>{
     response.json(person)
-  }else{
-    response.status(404).end()
-  }
+  })
 })
 
 //detele person from server
@@ -54,32 +51,24 @@ app.delete('/api/persons/:id', (request, response) => {
 //create new person
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  const id = Math.floor(Math.random() * 99999)
 
   if(!body.name || !body.number){
     return response.status(400).json({
       error: "The name or number is missing"
     })
   }
-  const personsName = persons.map(person=>person.name)
-  // console.log(personsName)
-  if(personsName.find(name=> name === body.name)){
-    return response.status(409).json({
-      error: "The name must be unique"
-    })
-  }
 
-  const person = {
-    id: String(id),
+  const person = new Person({
     name: body.name,
     number: body.number,
-  }
+  })
 
-
-  persons = persons.concat(person)
-  // console.log(body, id)
-  response.json(persons)
+  person.save().then(result=>{
+    response.json(result)
+  })
 })
+  // console.log(body, id)
+  
 
 const PORT = 3001
 app.listen(PORT, () => {
