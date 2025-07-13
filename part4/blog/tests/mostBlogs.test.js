@@ -71,7 +71,7 @@ describe('Most Blogs', () => {
   test('when list has five blog, equals', () => {
     const result = listHelper.mostBlogs(listWithFiveBlog)
     assert.deepStrictEqual(result, {
-      author: "Edsger W. Dijkstra",
+      author: 'Edsger W. Dijkstra',
       blogs: 3,
     })
   })
