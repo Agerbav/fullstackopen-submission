@@ -75,6 +75,17 @@ test('blog with no likes propery, default to 0 ', async () => {
   assert(blogsAtEnd[blogsAtEnd.length-1].likes === 0)
 })
 
+test('blog with no title or url property, returns 400 bad request', async () => {
+  const newBlog = {
+    "author": "testtest",
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
