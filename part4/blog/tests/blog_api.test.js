@@ -32,6 +32,29 @@ test('blog id are properly named id', async () => {
   assert.strictEqual(response.body[0].hasOwnProperty('id') && response.body[0].hasOwnProperty('_id') === false, true)
 })
 
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+    "title": "async/await simplifies making async calls",
+    "author": "testtest",
+    "url": "randomurl.com",
+    "likes": 0,
+  }
+  
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+
+  const blogsAtEnd = await helper.blogsInDb()
+  // console.log(blogsAtEnd);
+  
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+  const contents = blogsAtEnd.map(n => n.title)
+  assert(contents.includes('async/await simplifies making async calls'))
+})
 
 after(async () => {
   await mongoose.connection.close()
