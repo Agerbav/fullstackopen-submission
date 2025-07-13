@@ -29,7 +29,9 @@ test('all blogs are returned', async () => {
 
 test('blog id are properly named id', async () => {
   const response = await api.get('/api/blogs')
-  assert.strictEqual(response.body[0].hasOwnProperty('id') && response.body[0].hasOwnProperty('_id') === false, true)
+  for(const blog of response.body){
+    assert(blog.hasOwnProperty('id') && !blog.hasOwnProperty('_id'))
+  } 
 })
 
 test('a valid blog can be added ', async () => {
@@ -54,6 +56,23 @@ test('a valid blog can be added ', async () => {
 
   const contents = blogsAtEnd.map(n => n.title)
   assert(contents.includes('async/await simplifies making async calls'))
+})
+
+test('blog with no likes propery, default to 0 ', async () => {
+  const newBlog = {
+    "title": "this blog doesnt have likes properties",
+    "author": "testtest",
+    "url": "randomurl.com",
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert(blogsAtEnd[blogsAtEnd.length-1].likes === 0)
 })
 
 after(async () => {
