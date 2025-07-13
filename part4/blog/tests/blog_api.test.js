@@ -1,5 +1,5 @@
 const assert = require('node:assert')
-const { test, after, beforeEach } = require('node:test')
+const { test, after, beforeEach, expect } = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
@@ -15,10 +15,10 @@ beforeEach(async () => {
 })
 
 test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+await api
+  .get('/api/blogs')
+  .expect(200)
+  .expect('Content-Type', /application\/json/)
 })
 
 test('all blogs are returned', async () => {
@@ -26,6 +26,12 @@ test('all blogs are returned', async () => {
 
   assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
+
+test('blog id are properly named id', async () => {
+  const response = await api.get('/api/blogs')
+  assert.strictEqual(response.body[0].hasOwnProperty('id') && response.body[0].hasOwnProperty('_id') === false, true)
+})
+
 
 after(async () => {
   await mongoose.connection.close()
