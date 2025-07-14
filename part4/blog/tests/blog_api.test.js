@@ -100,6 +100,19 @@ test('blog deleted with status 204', async () => {
   assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
 })
 
+test('update blog post likes', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0] 
+  const newLikes = {likes: 1234321}
+
+  await api.put(`/api/blogs/${blogToUpdate.id}`).send(newLikes).expect(200)
+
+  const blogsAtEnd = await helper.blogsInDb() 
+  const updatedBlog = blogsAtEnd[0]
+
+  assert.strictEqual(updatedBlog.likes, newLikes.likes)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
