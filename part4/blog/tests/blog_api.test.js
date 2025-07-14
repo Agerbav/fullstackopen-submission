@@ -54,7 +54,7 @@ test('a valid blog can be added ', async () => {
   
   assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
 
-  const contents = blogsAtEnd.map(n => n.title)
+  const contents = blogsAtEnd.map(b => b.title)
   assert(contents.includes('async/await simplifies making async calls'))
 })
 
@@ -84,6 +84,20 @@ test('blog with no title or url property, returns 400 bad request', async () => 
     .post('/api/blogs')
     .send(newBlog)
     .expect(400)
+})
+
+test('blog deleted with status 204', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  const contents = blogsAtEnd.map(b => b.title)
+  assert(!contents.includes(blogToDelete.title))
+
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
 })
 
 after(async () => {
