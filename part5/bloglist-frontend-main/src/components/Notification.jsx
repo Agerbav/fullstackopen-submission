@@ -1,4 +1,4 @@
-const Notification = ({message}) => {
+const Notification = ({ message }) => {
   if(message){
     return (
       <h1>{message}</h1>

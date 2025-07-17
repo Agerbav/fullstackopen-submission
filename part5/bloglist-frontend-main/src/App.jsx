@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const App = () => {
     event.preventDefault()
     try{
       const user = await loginService.login({
-        username, password, id
+        username, password
       })
       window.localStorage.setItem('loggedUserJSON', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -72,7 +72,7 @@ const App = () => {
   const handleRemoveBlog = (id) => {
     blogService
       .remove(id)
-        .then(returnedBlog => {
+      .then(returnedBlog => {
         setBlogs(blogs.filter(blog => blog.id !== id))
       })
   }
@@ -81,11 +81,11 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         Username
-        <input type="text" value={username} name='Username' onChange={({target}) => setUsername(target.value)}/>
+        <input type="text" value={username} name='Username' onChange={({ target }) => setUsername(target.value)}/>
       </div>
       <div>
         Password
-        <input type="text" value={password} name='Password' onChange={({target}) => setPassword(target.value)}/>
+        <input type="text" value={password} name='Password' onChange={({ target }) => setPassword(target.value)}/>
       </div>
       <button type='submit'>Login</button>
     </form>
@@ -100,7 +100,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification message={message}/>
-      {user === null 
+      {user === null
         ? loginForm() :
         <div>
           <p>{user.name} Logged in <button onClick={handleLogout}>Log Out</button></p>
@@ -113,8 +113,8 @@ const App = () => {
             {blogs
               .sort((a, b) => b.likes - a.likes)
               .map(blog =>
-              <Blog key={blog.id} blog={blog} handleAddLike={handleAddLike} handleRemoveBlog={handleRemoveBlog} user={user}/>
-            )
+                <Blog key={blog.id} blog={blog} handleAddLike={handleAddLike} handleRemoveBlog={handleRemoveBlog} user={user}/>
+              )
             }
           </div>
         </div>

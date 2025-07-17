@@ -4,19 +4,18 @@ import Notification from "./components/Notification"
 import Footer from './components/Footer'
 import LoginForm from "./components/LoginForm"
 import NoteForm from "./components/NoteForm"
-import Togglable from "./components/Toggleable"
+import Togglable from "./components/Togglable"
 import noteService from "./services/notes"
 import loginService from "./services/login"
 
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState("")
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState('some error happened...')
   const [username, setUsername] = useState('')   
   const [password, setPassword] = useState('') 
-  const [user, setUser] = useState(null)
+  const [_user, setUser] = useState(null)
 
   useEffect(() => {
     noteService
@@ -47,7 +46,7 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.map(note => note.id === id ? returnedNote : note))
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage(
           `Note '${note.content}' was already removed from server`
         )
@@ -65,7 +64,6 @@ const App = () => {
       .create(noteObject)
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
-        setNewNote("")
       })
   }
 
@@ -85,6 +83,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch(exception) {
+      console.log(exception);
       setErrorMessage('Wrong Credentials')
       setTimeout(() => {
         setErrorMessage(null)
