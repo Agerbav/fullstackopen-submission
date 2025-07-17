@@ -61,6 +61,16 @@ const App = () => {
         }, 5000)
       })
   }
+  const handleAddLike = (blogObject) => {
+    blogService
+      .update(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== returnedBlog.id ? blog : returnedBlog))
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
+  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -96,7 +106,7 @@ const App = () => {
           </div>
           <div>
             {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog key={blog.id} blog={blog} handleAddLike={handleAddLike} user={blog.user}/>
             )}
           </div>
         </div>
