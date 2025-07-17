@@ -34,7 +34,7 @@ const App = () => {
     event.preventDefault()
     try{
       const user = await loginService.login({
-        username, password
+        username, password, id
       })
       window.localStorage.setItem('loggedUserJSON', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -66,9 +66,14 @@ const App = () => {
       .update(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.map(blog => blog.id !== returnedBlog.id ? blog : returnedBlog))
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+      })
+  }
+
+  const handleRemoveBlog = (id) => {
+    blogService
+      .remove(id)
+        .then(returnedBlog => {
+        setBlogs(blogs.filter(blog => blog.id !== id))
       })
   }
 
@@ -108,7 +113,7 @@ const App = () => {
             {blogs
               .sort((a, b) => b.likes - a.likes)
               .map(blog =>
-              <Blog key={blog.id} blog={blog} handleAddLike={handleAddLike} user={blog.user}/>
+              <Blog key={blog.id} blog={blog} handleAddLike={handleAddLike} handleRemoveBlog={handleRemoveBlog} user={user}/>
             )
             }
           </div>
