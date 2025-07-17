@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content" : "Vscode for life",
+  "important" : true,
+  "userId": "6874b81a48296ef8b9559638"
+}
